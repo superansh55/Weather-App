@@ -1,22 +1,50 @@
-async function getWeatherData(city){
-    const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?key=QDESR9R4TBAV9ZKHBRUTT3SX9`);
-    
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return data;
+import "./styles.css";
+import { getWeatherData, convertData } from "./getData.js";
+import {
+  updateWeatherUI,
+  showLoading,
+  hideLoading,
+  showError,
+} from "./displayData.js";
+
+const cityInput = document.getElementById("cityInput");
+const searchBtn = document.getElementById("searchBtn");
+
+
+async function handleSearch() {
+  const city = cityInput.value.trim();
+
+  if (!city) {
+    showError("Please enter a city name");
+    return;
+  }
+
+  showLoading();
+
+  try {
+    const data = await getWeatherData(city);
+    const filteredData = convertData(data);
+    hideLoading();
+    updateWeatherUI(filteredData);
+  } catch (err) {
+    hideLoading();
+    showError(
+      `Error: ${err.message}. Please check the city name and try again.`,
+    );
+    console.error("Error:", err);
+  }
 }
 
-getWeatherData("ghaziabad")
-    .then(data => {
-        function convertData(){
-            let filteredData = {};
-          
-            filteredData.currentTemp = data.currentConditions.temp;
-            return filteredData.currentTemp;
-        }
-        console.log(convertData()); 
-    })
-    .catch(error => console.error('Error:', error));
+
+searchBtn.addEventListener("click", handleSearch);
+
+cityInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    handleSearch();
+  }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  handleSearch();
+});
+

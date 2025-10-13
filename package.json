@@ -1,5 +1,5 @@
 {
-  "name": "basic-template-repo",
+  "name": "Weather-App",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/superansh55/Weather-App.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/superansh55/Weather-App/issues"
   },
-  "homepage": "",
+  "homepage": "https://github.com/superansh55/Weather-App#readme",
   "devDependencies": {
     "@eslint/js": "^9.37.0",
     "css-loader": "^7.1.2",

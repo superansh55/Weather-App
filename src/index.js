@@ -9,7 +9,10 @@ import {
 
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
+const unitSwitch = document.getElementById("unitSwitch");
 
+
+let currentUnit = 'metric'; 
 
 async function handleSearch() {
   const city = cityInput.value.trim();
@@ -22,14 +25,19 @@ async function handleSearch() {
   showLoading();
 
   try {
-    const data = await getWeatherData(city);
+  
+    const data = await getWeatherData(city, currentUnit);
     const filteredData = convertData(data);
     hideLoading();
-    updateWeatherUI(filteredData);
+    
+  
+    const unitSymbol = currentUnit === 'metric' ? '°C' : '°F';
+    updateWeatherUI(filteredData, unitSymbol);
+    
   } catch (err) {
     hideLoading();
     showError(
-      `Error: ${err.message}. Please check the city name and try again.`,
+      `Error: ${err.message}. Please check city name.`,
     );
     console.error("Error:", err);
   }
@@ -44,7 +52,14 @@ cityInput.addEventListener("keypress", (e) => {
   }
 });
 
+
+unitSwitch.addEventListener("change", () => {
+   
+    currentUnit = unitSwitch.checked ? 'us' : 'metric';
+    handleSearch(); 
+});
+
+
 window.addEventListener("DOMContentLoaded", () => {
   handleSearch();
 });
-
